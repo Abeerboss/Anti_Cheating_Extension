@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Anti-Cheating Extension",
+  "version": "2.0",
+  "description": "Student exam monitor with Firebase backend and separate teacher/student portals",
+
+  "permissions": ["storage", "tabs"],
+
+  "host_permissions": [
+    "https://firestore.googleapis.com/*",
+    "https://*.googleapis.com/*",
+    "https://*.firebaseio.com/*"
+  ],
+
+  "action": {
+    "default_popup": "portal.html"
+  },
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "auth.css", "portal.css", "portal.js",
+        "teacher.css", "firebase.js", "shared.css",
+        "student.html", "student.js",
+        "teacher.html", "teacher.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
