@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-Cheating Extension – Student</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo"><span class="logo-hex">⬡</span><span class="logo-text">Anti-Cheating Extension</span></div>
+    <div class="header-right">
+      <div class="status-dot off" id="status-dot"></div>
+      <span class="status-label" id="status-label">INACTIVE</span>
+    </div>
+  </div>
+
+  <!-- ── SCREEN: AUTH ── -->
+  <div class="screen" id="screen-auth">
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login">Login</button>
+      <button class="auth-tab" id="tab-register">Register</button>
+    </div>
+
+    <div class="auth-panel" id="panel-login">
+      <div class="field">
+        <label>Student ID</label>
+        <input id="l-id" type="text" placeholder="e.g. ST-2041" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="l-pass" type="password" placeholder="••••••">
+      </div>
+      <div id="login-msg" class="msg-box"></div>
+      <button id="btn-login" class="btn btn-accent btn-full">Login</button>
+    </div>
+
+    <div class="auth-panel hidden" id="panel-register">
+      <div class="field">
+        <label>Full Name</label>
+        <input id="r-name" type="text" placeholder="e.g. Ahmed Raza" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Student ID</label>
+        <input id="r-id" type="text" placeholder="e.g. ST-2041" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input id="r-email" type="email" placeholder="e.g. ahmed@uni.edu">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="r-pass" type="password" placeholder="Min 6 characters">
+      </div>
+      <div class="field">
+        <label>Confirm Password</label>
+        <input id="r-pass2" type="password" placeholder="Repeat password">
+      </div>
+      <div id="register-msg" class="msg-box"></div>
+      <button id="btn-register" class="btn btn-accent btn-full">Create Account</button>
+    </div>
+
+    <button id="btn-back" class="btn btn-ghost btn-full" style="margin-top:8px">← Back to Portal</button>
+  </div>
+
+  <!-- ── SCREEN: EXAM SETUP ── -->
+  <div class="screen hidden" id="screen-setup">
+    <div class="welcome-row">
+      <div class="screen-title" style="margin:0">Welcome back</div>
+      <div id="disp-student-tag" class="student-tag"></div>
+    </div>
+    <div class="field">
+      <label>Exam Title</label>
+      <input id="exam-title" type="text" placeholder="e.g. CS101 Final" autocomplete="off">
+    </div>
+    <div id="setup-msg" class="msg-box"></div>
+    <button id="btn-start" class="btn btn-accent btn-full">▶ Start Exam</button>
+    <button id="btn-logout" class="btn btn-ghost btn-full" style="margin-top:6px">Logout</button>
+  </div>
+
+  <!-- ── SCREEN: EXAM ACTIVE ── -->
+  <div class="screen hidden" id="screen-exam">
+    <div class="exam-card">
+      <div class="exam-card-row"><span class="exam-label">Student</span><span class="exam-val" id="disp-name">—</span></div>
+      <div class="exam-card-row"><span class="exam-label">ID</span><span class="exam-val" id="disp-id">—</span></div>
+      <div class="exam-card-row"><span class="exam-label">Exam</span><span class="exam-val" id="disp-exam">—</span></div>
+      <div class="exam-card-row"><span class="exam-label">Started</span><span class="exam-val" id="disp-time">—</span></div>
+      <div class="exam-card-row"><span class="exam-label">Status</span><span class="exam-val"><span class="tag tag-active">● Active</span></span></div>
+    </div>
+    <div class="monitor-grid">
+      <div class="monitor-chip">Tab Switch</div>
+      <div class="monitor-chip">Fullscreen Exit</div>
+      <div class="monitor-chip">Copy / Paste</div>
+      <div class="monitor-chip">Right Click</div>
+      <div class="monitor-chip">Login / Logout</div>
+    </div>
+    <div class="warn-banner">⚠ Monitoring is active. All suspicious activity is recorded.</div>
+    <div class="violations-header">
+      <span>Your Violations</span>
+      <span id="viol-count" class="viol-count">0</span>
+    </div>
+    <ul class="log-list" id="logList"></ul>
+    <button id="btn-end" class="btn btn-danger btn-full" style="margin-top:8px">■ End Exam &amp; Logout</button>
+  </div>
+
+  <div class="footer-note">Your activity is monitored and reported to your teacher.</div>
+
+  <script src="firebase.js"></script>
+  <script src="student.js"></script>
+</body>
+</html>

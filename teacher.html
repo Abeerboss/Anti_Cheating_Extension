@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-Cheating Extension – Teacher</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="teacher.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo"><span class="logo-hex">⬡</span><span class="logo-text">Anti-Cheating Extension</span></div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span id="teacher-name-tag" style="font-size:10px;color:#6e7681"></span>
+      <button id="btn-teacher-logout" class="btn btn-ghost" style="padding:4px 10px;display:none">Logout</button>
+    </div>
+  </div>
+
+  <!-- ── AUTH ── -->
+  <div id="teacher-auth-wrap" class="auth-center">
+    <div class="auth-box">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="t-tab-login">Login</button>
+        <button class="auth-tab" id="t-tab-register">Register</button>
+      </div>
+
+      <div class="auth-panel" id="t-panel-login">
+        <div class="field"><label>Username</label><input id="t-user" type="text" placeholder="e.g. teacher01" autocomplete="off"></div>
+        <div class="field"><label>Password</label><input id="t-pass" type="password" placeholder="••••••"></div>
+        <div id="t-login-msg" class="msg-box"></div>
+        <button id="btn-t-login" class="btn btn-accent btn-full">Login</button>
+      </div>
+
+      <div class="auth-panel hidden" id="t-panel-register">
+        <div class="field"><label>Full Name</label><input id="t-r-name" type="text" placeholder="e.g. Dr. Sara Ahmed" autocomplete="off"></div>
+        <div class="field"><label>Username</label><input id="t-r-user" type="text" placeholder="e.g. teacher01" autocomplete="off"></div>
+        <div class="field"><label>Email</label><input id="t-r-email" type="email" placeholder="e.g. sara@uni.edu"></div>
+        <div class="field"><label>Password</label><input id="t-r-pass" type="password" placeholder="Min 6 characters"></div>
+        <div class="field"><label>Confirm Password</label><input id="t-r-pass2" type="password" placeholder="Repeat password"></div>
+        <div id="t-register-msg" class="msg-box"></div>
+        <button id="btn-t-register" class="btn btn-accent btn-full">Create Teacher Account</button>
+      </div>
+
+      <button id="btn-close" class="btn btn-ghost btn-full" style="margin-top:8px">← Close</button>
+    </div>
+  </div>
+
+  <!-- ── DASHBOARD ── -->
+  <div id="teacher-dashboard" class="teacher-layout hidden">
+    <div class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-label">Students</div>
+        <button id="btn-show-add" class="btn btn-accent" style="width:100%;padding:7px">+ Add Student</button>
+      </div>
+      <div class="sidebar-list" id="student-sidebar-list">
+        <div class="empty-state" style="padding:20px">No students yet.</div>
+      </div>
+      <div class="sidebar-footer">
+        <button class="btn btn-outline" style="width:100%;padding:6px" id="btn-export-all">⬇ Export All CSV</button>
+      </div>
+    </div>
+    <div class="main-area">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title" id="view-title">All Students Overview</div>
+          <span class="topbar-sub" id="view-sub">Click a student to view logs</span>
+        </div>
+        <button id="btn-export-student" class="btn btn-blue" style="display:none;padding:6px 12px">⬇ Export Student</button>
+        <button id="btn-refresh" class="btn btn-ghost" style="padding:6px 12px">↻ Refresh</button>
+      </div>
+      <div class="content" id="main-content"></div>
+    </div>
+  </div>
+
+  <script src="firebase.js"></script>
+  <script src="teacher.js"></script>
+</body>
+</html>
