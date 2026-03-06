@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@800&display=swap');
+
+body {
+  width: 280px;
+  background: #0d1117;
+  color: #c9d1d9;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding-bottom: 12px;
+}
+
+.portal-wrap {
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tagline {
+  font-size: 9px;
+  color: #6e7681;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.portal-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 14px;
+  cursor: pointer;
+  background: #161b22;
+  border: 1px solid #21262d;
+  text-align: left;
+  width: 100%;
+  transition: border-color 0.15s, transform 0.1s;
+}
+
+.portal-btn:hover { transform: translateY(-1px); }
+.portal-btn.teacher:hover { border-color: #d2ff47; }
+.portal-btn.student:hover { border-color: #47c8ff; }
+
+.btn-icon { font-size: 20px; margin-bottom: 4px; }
+
+.btn-label {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.portal-btn.teacher .btn-label { color: #d2ff47; }
+.portal-btn.student .btn-label { color: #47c8ff; }
+
+.btn-sub { font-size: 9px; color: #6e7681; }

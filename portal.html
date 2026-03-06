@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-Cheating Extension</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="portal.css">
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">
+      <span class="logo-hex">🛡</span>
+      <span class="logo-text">Anti-Cheating Extension</span>
+    </div>
+    <div class="version">v2.0</div>
+  </div>
+
+  <div class="portal-wrap">
+    <div class="tagline">Select your role to continue</div>
+
+    <button class="portal-btn teacher" id="btn-teacher">
+      <span class="btn-icon">🎓</span>
+      <span class="btn-label">Teacher</span>
+      <span class="btn-sub">Manage exams · View logs · Export reports</span>
+    </button>
+
+    <button class="portal-btn student" id="btn-student">
+      <span class="btn-icon">📝</span>
+      <span class="btn-label">Student</span>
+      <span class="btn-sub">Login · Start exam · View your session</span>
+    </button>
+  </div>
+
+  <div class="footer-note">🔥 🔥 Firebase · Firestore</div>
+
+  <script src="firebase.js"></script>
+  <script src="portal.js"></script>
+</body>
+</html>
