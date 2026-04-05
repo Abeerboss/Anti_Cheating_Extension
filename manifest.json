@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Anti-Cheating Extension",
-  "version": "1.0",
+  "version": "2.0",
   "description": "Student exam monitor with Firebase backend and separate teacher/student portals",
 
   "permissions": ["storage", "tabs"],
@@ -23,19 +23,56 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "js": [
+        "core.firebase.js",
+        "core.storage.js",
+        "core.logger.js",
+        "monitors.tabfocus.js",
+        "monitors.clipboard.js",
+        "monitors.screenshot.js",
+        "content.js"
+      ]
     }
   ],
 
   "web_accessible_resources": [
     {
       "resources": [
-        "auth.css", "portal.css", "portal.js",
-        "teacher.css", "firebase.js", "shared.css",
-        "student.html", "student.js",
-        "teacher.html", "teacher.js"
+        "auth.css",
+        "shared.css",
+        "portal.css",
+        "teacher.css",
+
+        "portal.html",
+        "portal.js",
+
+        "student.html",
+        "student.auth.js",
+        "student.exam.js",
+        "student.logs.js",
+        "student.init.js",
+
+        "teacher.html",
+        "teacher.auth.js",
+        "teacher.dashboard.js",
+        "teacher.students.js",
+        "teacher.render.js",
+        "teacher.export.js",
+        "teacher.init.js",
+
+        "core.firebase.js",
+        "core.storage.js",
+        "core.logger.js",
+        "monitors.tabfocus.js",
+        "monitors.clipboard.js",
+        "monitors.screenshot.js",
+
+        "shared.ui.js",
+        "shared.violations.js",
+        "shared.csv.js"
       ],
       "matches": ["<all_urls>"]
     }
   ]
 }
+
