@@ -21,18 +21,35 @@ A Chrome extension that monitors student activity during online exams and report
 
 ## Project Structure
 
-```
 Anti_Cheating_Extension/
-├── manifest.json       # Chrome Extension MV3 config
-├── portal.html/js/css  # Role selector popup (Teacher / Student)
-├── teacher.html/js/css # Teacher dashboard (full tab)
-├── student.html/js/css # Student exam UI (popup)
-├── auth.css            # Shared login & registration styles
-├── shared.css          # Global shared styles
-├── firebase.js         # Firestore REST API helpers
-├── background.js       # Service worker — Firebase log relay
-└── content.js          # Injected into all pages — event monitors
-```
+│
+├── manifest.json              ← Updated with all new files
+├── background.js              ← Service worker + GET_ACTIVE_TAB handler
+├── content.js                 ← Entry point (loads core files)
+├── portal.js                  ← Role selector (2 lines)
+│
+├── core.firebase.js           ← Firestore REST (fbSet, fbReadAll…)
+├── core.storage.js            ← chrome.storage helpers
+├── core.logger.js             ← log(), loggerActivate/Deactivate()
+├── core.monitors.js           ← All DOM monitors incl. screenshot + AI detect
+│
+├── shared.ui.js               ← $(), showMsg(), showScreen(), loading()
+├── shared.violations.js       ← COLOURS, SEV, sevClass(), labels
+├── shared.csv.js              ← downloadCSV()
+│
+├── student.html               ← Updated chips: Screenshot + AI Sites
+├── student.auth.js            ← Login / register / logout
+├── student.exam.js            ← Start / end exam, status dot
+├── student.logs.js            ← renderLogs()
+├── student.init.js            ← Bootstrap
+│
+├── teacher.html               ← Updated script order
+├── teacher.auth.js            ← Login / register / logout
+├── teacher.dashboard.js       ← Overview + student detail views
+├── teacher.students.js        ← Add / delete student
+├── teacher.render.js          ← All HTML templates (incl. AI/screenshot cols)
+├── teacher.export.js          ← CSV export buttons
+└── teacher.init.js            ← Bootstrap
 
 ---
 
