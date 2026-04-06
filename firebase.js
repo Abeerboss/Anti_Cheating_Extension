@@ -1,4 +1,4 @@
-var FB_KEY  = "AIzaSyDndLPk14Y0uu2tEQ82CXbbb_duJshBZBI"
+var FB_KEY  =
 var FS_BASE = "https://firestore.googleapis.com/v1/projects/anti-cheating-extension-4f1ad/databases/(default)/documents"
 var RQ_BASE = "https://firestore.googleapis.com/v1/projects/anti-cheating-extension-4f1ad/databases/(default):runQuery"
 
