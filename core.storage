@@ -1,0 +1,22 @@
+function storageGet(keys) {
+  return new Promise(r => chrome.storage.local.get(keys, r))
+}
+
+function storageSet(data) {
+  return new Promise(r => chrome.storage.local.set(data, r))
+}
+
+async function getSession()      { var d = await storageGet(["student_session"]); return d.student_session }
+async function getStudentLogin() { var d = await storageGet(["student_login"]);   return d.student_login }
+async function getTeacherLogin() { var d = await storageGet(["teacher_login","teacher_user"]); return d }
+async function getAllLogs()      { var d = await storageGet(["all_logs"]);         return d.all_logs || [] }
+
+async function saveSession(session)    { return storageSet({ student_session: session }) }
+async function saveStudentLogin(login) { return storageSet({ student_login: login }) }
+async function clearStudentLogin()     { return storageSet({ student_login: null }) }
+
+async function appendLog(entry) {
+  var all = await getAllLogs()
+  all.push(entry)
+  return storageSet({ all_logs: all })
+}
