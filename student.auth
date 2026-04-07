@@ -1,0 +1,50 @@
+function initStudentAuth() {
+  $("tab-login").addEventListener("click",    () => switchAuthTab("tab-login",    "tab-register",  "panel-login",    "panel-register"))
+  $("tab-register").addEventListener("click", () => switchAuthTab("tab-register", "tab-login",     "panel-register", "panel-login"))
+  $("btn-back").addEventListener("click",     () => { location.href = "portal.html" })
+  $("l-pass").addEventListener("keydown",     e  => e.key === "Enter" && $("btn-login").click())
+  $("btn-login").addEventListener("click",    onStudentLogin)
+  $("btn-register").addEventListener("click", onStudentRegister)
+  $("btn-logout").addEventListener("click",   onStudentLogout)
+}
+
+async function onStudentLogin() {
+  var id = $("l-id").value.trim(), pass = $("l-pass").value.trim()
+  if (!id || !pass) { showMsg("login-msg", "✗ Fill in all fields", "red"); return }
+  showMsg("login-msg", "Checking Firebase...", "blue")
+  try {
+    var students = await fbReadAll("students")
+    var match    = students.find(s => s.student_id === id && s.password === pass)
+    if (!match) { showMsg("login-msg", "✗ Wrong ID or password", "red"); $("l-pass").value = ""; return }
+    chrome.storage.local.set({ student_login: { id: match.student_id, name: match.name, email: match.email||"", loggedIn: true } }, function() {
+      $("disp-student-tag").textContent = match.student_id + " · " + match.name
+      showScreen("screen-setup")
+    })
+  } catch (e) { showMsg("login-msg", "✗ Firebase error", "red") }
+}
+
+async function onStudentRegister() {
+  var name  = $("r-name").value.trim(),  id    = $("r-id").value.trim()
+  var email = $("r-email").value.trim(), pass  = $("r-pass").value.trim(), pass2 = $("r-pass2").value.trim()
+  if (!name || !id || !email || !pass || !pass2) { showMsg("register-msg", "✗ Fill in all fields", "red"); return }
+  if (pass.length < 6)              { showMsg("register-msg", "✗ Password min 6 chars", "red"); return }
+  if (pass !== pass2)               { showMsg("register-msg", "✗ Passwords do not match", "red"); $("r-pass2").value = ""; return }
+  if (!/\S+@\S+\.\S+/.test(email)) { showMsg("register-msg", "✗ Invalid email", "red"); return }
+  showMsg("register-msg", "Saving...", "blue")
+  try {
+    var existing = await fbReadAll("students")
+    if (existing.find(s => s.student_id === id)) { showMsg("register-msg", "✗ Student ID already registered", "red"); return }
+    if (existing.find(s => s.email === email))   { showMsg("register-msg", "✗ Email already registered", "red"); return }
+    var ok = await fbSet("students", id, { student_id: id, name, email, password: pass, role: "student", created_at: new Date().toISOString() })
+    if (ok) {
+      showMsg("register-msg", "✓ Account created! Login now.", "green")
+      ;["r-name","r-id","r-email","r-pass","r-pass2"].forEach(f => $(f).value = "")
+      setTimeout(() => { $("tab-login").click(); $("l-id").value = id; $("l-pass").focus() }, 1500)
+    } else { showMsg("register-msg", "✗ Firebase write failed", "red") }
+  } catch (e) { showMsg("register-msg", "✗ Firebase error", "red") }
+}
+
+function onStudentLogout() {
+  chrome.storage.local.set({ student_login: null })
+  showScreen("screen-auth")
+}
