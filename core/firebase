@@ -1,4 +1,4 @@
-var FB_KEY  =
+var FB_KEY  = 
 var FS_BASE = "https://firestore.googleapis.com/v1/projects/anti-cheating-extension-4f1ad/databases/(default)/documents"
 var RQ_BASE = "https://firestore.googleapis.com/v1/projects/anti-cheating-extension-4f1ad/databases/(default):runQuery"
 
@@ -87,4 +87,3 @@ async function fbTestConnection() {
     return { ok: false, message: "Network error: " + e.message }
   }
 }
-
