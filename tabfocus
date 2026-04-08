@@ -1,0 +1,45 @@
+var AI_SITES = [
+  "chatgpt.com", "chat.openai.com",
+  "claude.ai",
+  "gemini.google.com", "bard.google.com",
+  "copilot.microsoft.com", "bing.com/chat",
+  "perplexity.ai",
+  "you.com",
+  "character.ai",
+  "poe.com",
+  "mistral.ai", "chat.mistral.ai",
+  "huggingface.co",
+  "phind.com",
+  "blackboxai.com",
+  "writesonic.com",
+  "jasper.ai",
+  "quillbot.com",
+  "chegg.com",
+  "coursehero.com",
+  "brainly.com",
+  "wolframalpha.com"
+]
+
+function isAISite(url) {
+  try {
+    var host = new URL(url).hostname.replace(/^www\./, "")
+    return AI_SITES.some(site => host === site || host.endsWith("." + site))
+  } catch { return false }
+}
+
+function detectActiveTab() {
+  if (!examActive) return
+  chrome.runtime.sendMessage({ action: "GET_ACTIVE_TAB" }, function(res) {
+    if (chrome.runtime.lastError || !res || !res.url) return
+    if (isAISite(res.url)) log("AI_SITE_VISIT", "Visited AI site: " + res.url)
+  })
+}
+
+function mountTabFocusMonitors() {
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      log("TAB_SWITCH", "Tab switched or window minimized")
+      detectActiveTab()
+    }
+  })
+}
