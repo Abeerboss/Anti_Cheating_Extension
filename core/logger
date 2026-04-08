@@ -1,0 +1,32 @@
+var examActive  = false
+var sessionInfo = {}
+
+function loggerActivate(session) {
+  examActive  = true
+  sessionInfo = session || {}
+}
+
+function loggerDeactivate() {
+  examActive  = false
+  sessionInfo = {}
+}
+
+function log(type, detail) {
+  if (!examActive) return
+  var entry = {
+    violation_type: type,
+    detail:         detail || "",
+    student_id:     sessionInfo.student_id   || "Unknown",
+    student_name:   sessionInfo.student_name || "Unknown",
+    exam_title:     sessionInfo.exam_title   || "Unknown",
+    timestamp:      new Date().toISOString(),
+    url:            location.href
+  }
+  chrome.storage.local.get(["all_logs"], function(d) {
+    var all = d.all_logs || []; all.push(entry)
+    chrome.storage.local.set({ all_logs: all })
+  })
+  chrome.runtime.sendMessage({ action: "FB_WRITE_LOG", log: entry }, function() {
+    if (chrome.runtime.lastError) console.warn("[ACE]", chrome.runtime.lastError.message)
+  })
+}
