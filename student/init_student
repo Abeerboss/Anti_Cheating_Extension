@@ -1,0 +1,24 @@
+function initStudent() {
+  initStudentAuth()
+  initExam()
+
+  chrome.storage.local.get(["student_login","student_session"], function(d) {
+    var sl = d.student_login, ss = d.student_session
+    if (ss && ss.exam_active) {
+      $("disp-name").textContent = ss.student_name; $("disp-id").textContent   = ss.student_id
+      $("disp-exam").textContent = ss.exam_title;   $("disp-time").textContent = new Date(ss.started_at).toLocaleTimeString()
+      setDot(true); renderLogs(ss.student_id); showScreen("screen-exam")
+    } else if (sl && sl.loggedIn) {
+      $("disp-student-tag").textContent = sl.id + " · " + sl.name; showScreen("screen-setup")
+    } else {
+      showScreen("screen-auth"); setDot(false)
+    }
+  })
+
+  setInterval(function() {
+    if (!$("screen-exam").classList.contains("hidden"))
+      chrome.storage.local.get(["student_session"], d => d.student_session && renderLogs(d.student_session.student_id))
+  }, 3000)
+}
+
+initStudent()
