@@ -48,3 +48,4 @@ function onStudentLogout() {
   chrome.storage.local.set({ student_login: null })
   showScreen("screen-auth")
 }
+
