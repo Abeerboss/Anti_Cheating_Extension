@@ -1,0 +1,18 @@
+function downloadCSV(logs, filename) {
+  var csv = "student_id,student_name,exam_code,violation_type,severity,detail,timestamp\n"
+  logs.forEach(l =>
+    csv += [
+      '"' + (l.student_id   || "") + '"',
+      '"' + (l.student_name || "") + '"',
+      '"' + (l.exam_title   || "") + '"',
+      l.violation_type || "",
+      sevClass(l.violation_type).toUpperCase(),
+      '"' + (l.detail || "").replace(/"/g, "'") + '"',
+      l.timestamp || ""
+    ].join(",") + "\n"
+  )
+  var a      = document.createElement("a")
+  a.href     = URL.createObjectURL(new Blob([csv], { type: "text/csv" }))
+  a.download = filename
+  a.click()
+}
