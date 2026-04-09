@@ -17,36 +17,36 @@
     </div>
   </div>
 
-  <!-- ── AUTH ── -->
   <div id="teacher-auth-wrap" class="auth-center">
     <div class="auth-box">
-      <div class="auth-tabs">
-        <button class="auth-tab active" id="t-tab-login">Login</button>
-        <button class="auth-tab" id="t-tab-register">Register</button>
-      </div>
 
-      <div class="auth-panel" id="t-panel-login">
-        <div class="field"><label>Username</label><input id="t-user" type="text" placeholder="e.g. teacher01" autocomplete="off"></div>
-        <div class="field"><label>Password</label><input id="t-pass" type="password" placeholder="••••••"></div>
-        <div id="t-login-msg" class="msg-box"></div>
-        <button id="btn-t-login" class="btn btn-accent btn-full">Login</button>
-      </div>
+      <div class="screen-title" style="margin-bottom:20px;font-size:13px">Teacher Login</div>
 
-      <div class="auth-panel hidden" id="t-panel-register">
-        <div class="field"><label>Full Name</label><input id="t-r-name" type="text" placeholder="e.g. Dr. Sara Ahmed" autocomplete="off"></div>
-        <div class="field"><label>Username</label><input id="t-r-user" type="text" placeholder="e.g. teacher01" autocomplete="off"></div>
-        <div class="field"><label>Email</label><input id="t-r-email" type="email" placeholder="e.g. sara@uni.edu"></div>
-        <div class="field"><label>Password</label><input id="t-r-pass" type="password" placeholder="Min 6 characters"></div>
-        <div class="field"><label>Confirm Password</label><input id="t-r-pass2" type="password" placeholder="Repeat password"></div>
-        <div id="t-register-msg" class="msg-box"></div>
-        <button id="btn-t-register" class="btn btn-accent btn-full">Create Teacher Account</button>
-      </div>
+      <div class="field"><label>Username</label><input id="t-user" type="text" placeholder="e.g. teacher01" autocomplete="off"></div>
+      <div class="field"><label>Password</label><input id="t-pass" type="password" placeholder="••••••"></div>
+      <div id="t-login-msg" class="msg-box"></div>
+      <button id="btn-t-login" class="btn btn-accent btn-full">Login</button>
 
       <button id="btn-close" class="btn btn-ghost btn-full" style="margin-top:8px">← Close</button>
+
+      <div style="margin-top:16px;text-align:center">
+        <a href="#" id="lnk-admin-setup" style="font-size:9px;color:#3d444d;letter-spacing:1px;text-decoration:none">ADMIN SETUP ▾</a>
+      </div>
+
+      <div id="admin-setup-wrap" class="hidden" style="margin-top:12px;border-top:1px solid #21262d;padding-top:14px">
+        <div class="screen-title" style="margin-bottom:12px;font-size:10px;color:#ff4757">Admin — Create Teacher Account</div>
+        <div class="field"><label>Admin Code</label><input id="admin-code" type="password" placeholder="Enter admin code"></div>
+        <div class="field"><label>Full Name</label><input id="admin-name" type="text" placeholder="e.g. Dr. Sara Ahmed" autocomplete="off"></div>
+        <div class="field"><label>Username</label><input id="admin-user" type="text" placeholder="e.g. teacher01" autocomplete="off"></div>
+        <div class="field"><label>Password</label><input id="admin-pass" type="password" placeholder="Min 6 characters"></div>
+        <div class="field"><label>Confirm Password</label><input id="admin-pass2" type="password" placeholder="Repeat password"></div>
+        <div id="admin-msg" class="msg-box"></div>
+        <button id="btn-admin-register" class="btn btn-danger btn-full">Create Teacher Account</button>
+      </div>
+
     </div>
   </div>
 
-  <!-- ── DASHBOARD ── -->
   <div id="teacher-dashboard" class="teacher-layout hidden">
     <div class="sidebar">
       <div class="sidebar-top">
@@ -73,7 +73,16 @@
     </div>
   </div>
 
-  <script src="firebase.js"></script>
-  <script src="teacher.js"></script>
+  <script src="core/firebase.js"></script>
+  <script src="core/storage.js"></script>
+  <script src="shared/violations.js"></script>
+  <script src="shared/ui.js"></script>
+  <script src="shared/csv.js"></script>
+  <script src="teacher/render.js"></script>
+  <script src="teacher/students.js"></script>
+  <script src="teacher/dashboard.js"></script>
+  <script src="teacher/export.js"></script>
+  <script src="teacher/auth.js"></script>
+  <script src="teacher/init.js"></script>
 </body>
 </html>
