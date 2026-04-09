@@ -1,0 +1,43 @@
+function setDot(on) {
+  var dot = $("status-dot"), lbl = $("status-label")
+  dot.classList.toggle("off", !on)
+  lbl.textContent = on ? "MONITORING" : "INACTIVE"
+  lbl.style.color = on ? "#00e676"    : "#3d444d"
+}
+
+function initExam() {
+  $("btn-start").addEventListener("click", onExamStart)
+  $("btn-end").addEventListener("click",   onExamEnd)
+}
+
+function onExamStart() {
+  var examTitle = $("exam-title").value.trim()
+  if (!examTitle) { showMsg("setup-msg", "✗ Enter exam code", "red"); return }
+  chrome.storage.local.get(["student_login"], function(d) {
+    var sl      = d.student_login || {}
+    var session = { student_id: sl.id, student_name: sl.name, exam_title: examTitle, started_at: new Date().toISOString(), exam_active: true }
+    chrome.storage.local.set({ student_session: session, all_logs: [] }, function() {
+      chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        tabs[0] && chrome.tabs.sendMessage(tabs[0].id, { action: "EXAM_START", session })
+      })
+      $("disp-name").textContent = sl.name;    $("disp-id").textContent   = sl.id
+      $("disp-exam").textContent = examTitle;  $("disp-time").textContent = new Date().toLocaleTimeString()
+      setDot(true); renderLogs(sl.id); showScreen("screen-exam")
+    })
+  })
+}
+
+function onExamEnd() {
+  chrome.storage.local.get(["student_session"], function(d) {
+    var s = d.student_session || {}
+    s.exam_active = false; s.ended_at = new Date().toISOString()
+    chrome.storage.local.set({ student_session: s, student_login: null }, function() {
+      chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        tabs[0] && chrome.tabs.sendMessage(tabs[0].id, { action: "EXAM_END" })
+      })
+      setDot(false)
+      ;["l-id","l-pass","exam-title"].forEach(f => $(f).value = "")
+      showScreen("screen-auth")
+    })
+  })
+}
