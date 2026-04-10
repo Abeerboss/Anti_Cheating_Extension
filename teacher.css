@@ -33,7 +33,7 @@ body { width: 100%; min-height: 100vh; }
   border-bottom: 1px solid #21262d; transition: background 0.1s;
   border-left: 2px solid transparent;
 }
-.student-item:hover { background: rgba(255,255,255,0.019); }
+.student-item:hover { background: rgba(255,255,255,0.02); }
 .student-item.active { background: rgba(210,255,71,0.04); border-left-color: #d2ff47; }
 
 .s-avatar {
