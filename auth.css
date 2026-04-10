@@ -1,4 +1,3 @@
-
 .auth-tabs {
   display: flex;
   border-bottom: 1px solid #21262d;
@@ -34,11 +33,11 @@
   border-bottom-color: #47c8ff;
 }
 
-/* ── Auth panels ─────────────────────────── */
+
 .auth-panel { display: block; }
 .auth-panel.hidden { display: none; }
 
-/* ── Auth center wrapper (teacher full page) */
+
 .auth-center {
   display: flex;
   align-items: center;
@@ -54,7 +53,7 @@
   width: 360px;
 }
 
-/* ── Welcome row ─────────────────────────── */
+
 .welcome-row {
   display: flex;
   align-items: center;
@@ -69,7 +68,6 @@
   letter-spacing: 1px;
 }
 
-/* ── Warn banner ─────────────────────────── */
 .warn-banner {
   background: #161b22;
   border: 1px solid #21262d;
@@ -80,13 +78,13 @@
   margin-bottom: 10px;
 }
 
-/* ── Status label ────────────────────────── */
+
 .status-label {
   font-size: 9px;
   color: #3d444d;
 }
 
-/* ── Divider with text ───────────────────── */
+
 .auth-divider {
   display: flex;
   align-items: center;
@@ -106,7 +104,7 @@
   background: #21262d;
 }
 
-/* ── Password strength bar ───────────────── */
+
 .strength-wrap {
   margin-top: 4px;
   height: 3px;
