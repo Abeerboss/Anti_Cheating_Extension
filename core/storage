@@ -1,9 +1,21 @@
 function storageGet(keys) {
-  return new Promise(r => chrome.storage.local.get(keys, r))
+  return new Promise(function(r) {
+    if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.get(keys, r)
+    } else {
+      r({})
+    }
+  })
 }
 
 function storageSet(data) {
-  return new Promise(r => chrome.storage.local.set(data, r))
+  return new Promise(function(r) {
+    if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.set(data, r)
+    } else {
+      r()
+    }
+  })
 }
 
 async function getSession()      { var d = await storageGet(["student_session"]); return d.student_session }
