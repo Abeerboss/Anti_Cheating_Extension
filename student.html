@@ -44,7 +44,7 @@
       <div class="screen-title" style="margin:0">Welcome back</div>
       <div id="disp-student-tag" class="student-tag"></div>
     </div>
-    <div class="field"><label>Exam Title</label><input id="exam-title" type="text" placeholder="e.g. CS101 Final" autocomplete="off"></div>
+    <div class="field"><label>Exam Code</label><input id="exam-title" type="text" placeholder="e.g. CS101-2025" autocomplete="off"></div>
     <div id="setup-msg" class="msg-box"></div>
     <button id="btn-start" class="btn btn-accent btn-full">▶ Start Exam</button>
     <button id="btn-logout" class="btn btn-ghost btn-full" style="margin-top:6px">Logout</button>
@@ -54,7 +54,7 @@
     <div class="exam-card">
       <div class="exam-card-row"><span class="exam-label">Student</span><span class="exam-val" id="disp-name">—</span></div>
       <div class="exam-card-row"><span class="exam-label">ID</span><span class="exam-val" id="disp-id">—</span></div>
-      <div class="exam-card-row"><span class="exam-label">Exam</span><span class="exam-val" id="disp-exam">—</span></div>
+      <div class="exam-card-row"><span class="exam-label">Exam Code</span><span class="exam-val" id="disp-exam">—</span></div>
       <div class="exam-card-row"><span class="exam-label">Started</span><span class="exam-val" id="disp-time">—</span></div>
       <div class="exam-card-row"><span class="exam-label">Status</span><span class="exam-val"><span class="tag tag-active">● Active</span></span></div>
     </div>
@@ -77,13 +77,13 @@
 
   <div class="footer-note">Your activity is monitored and reported to your teacher.</div>
 
-  <script src="core.firebase.js"></script>
-  <script src="core.storage.js"></script>
-  <script src="shared.violations.js"></script>
-  <script src="shared.ui.js"></script>
-  <script src="student.auth.js"></script>
-  <script src="student.logs.js"></script>
-  <script src="student.exam.js"></script>
-  <script src="student.init.js"></script>
+  <script src="core/firebase.js"></script>
+  <script src="core/storage.js"></script>
+  <script src="shared/violations.js"></script>
+  <script src="shared/ui.js"></script>
+  <script src="student/auth_student.js"></script>
+  <script src="student/logs.js"></script>
+  <script src="student/exam.js"></script>
+  <script src="student/init_student.js"></script>
 </body>
 </html>
