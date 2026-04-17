@@ -5,7 +5,7 @@ function setDot(on) {
   lbl.style.color = on ? "#00e676"    : "#3d444d"
 }
 
-// --- Fullscreen monitoring (runs directly in student.html page context) ---
+
 var fsActive = false
 var wasFS    = false
 
@@ -28,7 +28,7 @@ function unmountFullscreenMonitor() {
   document.removeEventListener("fullscreenchange",       onFSChange)
   document.removeEventListener("webkitfullscreenchange", onFSChange)
 }
-// -------------------------------------------------------------------------
+
 
 function initExam() {
   $("btn-start").addEventListener("click", onExamStart)
