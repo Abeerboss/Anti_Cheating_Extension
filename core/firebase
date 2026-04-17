@@ -1,6 +1,5 @@
 var FB_KEY  = 
 var FS_BASE = "https://firestore.googleapis.com/v1/projects/anti-cheating-extension-4f1ad/databases/(default)/documents"
-var RQ_BASE = "https://firestore.googleapis.com/v1/projects/anti-cheating-extension-4f1ad/databases/(default):runQuery"
 
 function toFS(obj) {
   var f = {}
@@ -63,19 +62,14 @@ async function fbDelete(col, id) {
 }
 
 async function fbQuery(col, field, value) {
-  var json = await fbReq(RQ_BASE, {
-    method: "POST",
-    body: JSON.stringify({ structuredQuery: {
-      from: [{ collectionId: col }],
-      where: { fieldFilter: { field: { fieldPath: field }, op: "EQUAL", value: { stringValue: String(value) } } },
-      orderBy: [{ field: { fieldPath: "timestamp" }, direction: "DESCENDING" }]
-    }})
-  })
-  return Array.isArray(json) ? json.filter(r => r.document).map(r => docToObj(r.document)) : []
+  // Use list-all + client-side filter to avoid the :runQuery endpoint (which
+  // requires OAuth and returns 404 when using an API key).
+  var all = await fbReadAll(col)
+  return all.filter(function(doc) { return String(doc[field]) === String(value) })
 }
 
 async function fbTestConnection() {
-  var fixes = { 403: "Firestore Rules → allow read, write: if true;", 404: "Create Firestore database", 400: "Wrong Project ID", 401: "Wrong API Key" }
+  var fixes = { 403: "Firestore Rules → allow read, write: if true;", 404: "Create Firestore database in Firebase console", 400: "Wrong Project ID", 401: "Wrong API Key" }
   try {
     var res  = await fetch(FS_BASE + "/students?pageSize=1", { headers: { "x-goog-api-key": FB_KEY } })
     var body = {}
