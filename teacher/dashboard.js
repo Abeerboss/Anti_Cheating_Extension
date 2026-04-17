@@ -63,7 +63,8 @@ async function loadOverview() {
       addExamForm() +
       addStudentForm() +
       panel("Registered Students", students.length + " registered", renderStudentTable(students, allLogs)) +
-      panel("All Violations", allLogs.length + " entries", renderLogTable(allLogs))
+      panel("All Violations", allLogs.length + " entries", renderLogTable(allLogs)) +
+      panel("Violations by Exam Code", Object.keys(allLogs.reduce(function(m,l){m[l.exam_title||"Unknown"]=1;return m},{})).length + " exam(s)", renderExamCodeViolationTables(students, allLogs))
 
     $("btn-show-exam").onclick = function() {
       var p = $("exam-panel")
@@ -84,6 +85,9 @@ async function loadOverview() {
     }))
     content.querySelectorAll(".del-btn").forEach(btn => btn.addEventListener("click", function(e) {
       e.stopPropagation(); deleteStudent(this.dataset.id)
+    }))
+    content.querySelectorAll(".del-exam-btn").forEach(btn => btn.addEventListener("click", function(e) {
+      e.stopPropagation(); deleteExam(this.dataset.code)
     }))
     loadSidebar()
   } catch(e) { $("main-content").innerHTML = '<div class="empty-state">Error: ' + e.message + '</div>'; console.warn("[ACE]", e) }
@@ -122,4 +126,3 @@ async function createExam() {
     } else { showMsg("exam-msg", "✗ Firebase write failed", "red") }
   } catch(e) { showMsg("exam-msg", "✗ Error: " + e.message, "red") }
 }
-
