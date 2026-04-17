@@ -135,3 +135,56 @@ function renderStudentAsTableRow(student, sLogs) {
     '<td><span class="tag ' + (count > 0 ? "tag-ended" : "tag-active") + '">' + (count > 0 ? "Flagged" : "Clean") + '</span></td>' +
     '</tr>'
 }
+
+function renderExamCodeViolationTables(students, allLogs) {
+
+  var examMap = {}
+  allLogs.forEach(function(l) {
+    var code = l.exam_title || "Unknown"
+    if (!examMap[code]) examMap[code] = []
+    examMap[code].push(l)
+  })
+
+  var codes = Object.keys(examMap).sort()
+  if (!codes.length) return '<div class="empty-state">No exam violations recorded.</div>'
+
+  return codes.map(function(code) {
+    var examLogs = examMap[code]
+
+  
+    var studentIds = Array.from(new Set(examLogs.map(l => l.student_id)))
+
+    var rows = studentIds.map(function(sid) {
+      var student  = students.find(s => s.student_id === sid) || { student_id: sid, name: examLogs.find(l => l.student_id === sid).student_name || sid }
+      var sLogs    = examLogs.filter(l => l.student_id === sid)
+      var count    = sLogs.length
+      var lastLog  = sLogs.slice().sort((a,b) => (b.timestamp||"").localeCompare(a.timestamp||""))[0]
+      var lastSeen = lastLog ? lastLog.timestamp.slice(0,19).replace("T"," ") : "—"
+      var lastType = lastLog ? violationLabel(lastLog.violation_type) : "—"
+      var color    = lastLog ? (COLOURS[lastLog.violation_type] || "#6e7681") : "#6e7681"
+      return '<tr class="student-row" data-id="' + student.student_id + '" style="cursor:pointer">' +
+        '<td style="color:#47c8ff;font-weight:700">' + student.student_id + '</td>' +
+        '<td style="color:#e6edf3;font-weight:600">' + student.name + '</td>' +
+        '<td style="color:' + color + ';font-size:9px">' + lastType + '</td>' +
+        '<td style="color:#6e7681;font-size:9px;white-space:nowrap">' + lastSeen + '</td>' +
+        '<td><span style="color:' + (count > 0 ? "#ff4757" : "#00e676") + ';font-weight:800;font-size:13px">' + count + '</span></td>' +
+        '<td><span class="tag ' + (count > 0 ? "tag-ended" : "tag-active") + '">' + (count > 0 ? "Flagged" : "Clean") + '</span></td>' +
+        '</tr>'
+    }).join("")
+
+    var table = '<table class="log-table"><thead>' +
+      '<tr><th>ID</th><th>Name</th><th>Last Violation</th><th>Last Seen</th><th>Count</th><th>Status</th></tr>' +
+      '</thead><tbody>' + rows + '</tbody></table>'
+
+    return '<div class="panel" style="margin-bottom:16px">' +
+      '<div class="panel-header" style="display:flex;align-items:center;justify-content:space-between">' +
+        '<span class="panel-title">📋 Exam: ' + code + '</span>' +
+        '<span style="display:flex;align-items:center;gap:10px">' +
+          '<span style="font-size:9px;color:#6e7681">' + studentIds.length + ' student' + (studentIds.length !== 1 ? 's' : '') + ' · ' + examLogs.length + ' violation' + (examLogs.length !== 1 ? 's' : '') + '</span>' +
+          '<button class="btn btn-danger del-exam-btn" data-code="' + code + '" style="padding:3px 10px;font-size:9px;line-height:1.4">✕ Delete</button>' +
+        '</span>' +
+      '</div>' +
+      '<div class="panel-body">' + table + '</div>' +
+    '</div>'
+  }).join("")
+}
