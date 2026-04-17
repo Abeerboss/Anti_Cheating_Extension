@@ -22,11 +22,17 @@ function log(type, detail) {
     timestamp:      new Date().toISOString(),
     url:            location.href
   }
-  chrome.storage.local.get(["all_logs"], function(d) {
-    var all = d.all_logs || []; all.push(entry)
-    chrome.storage.local.set({ all_logs: all })
-  })
-  chrome.runtime.sendMessage({ action: "FB_WRITE_LOG", log: entry }, function() {
-    if (chrome.runtime.lastError) console.warn("[ACE]", chrome.runtime.lastError.message)
-  })
+  try {
+    chrome.storage.local.get(["all_logs"], function(d) {
+      if (chrome.runtime.lastError) return
+      var all = d.all_logs || []; all.push(entry)
+      chrome.storage.local.set({ all_logs: all })
+    })
+  } catch(e) { return }
+  try {
+    if (!chrome.runtime || !chrome.runtime.id) return
+    chrome.runtime.sendMessage({ action: "FB_WRITE_LOG", log: entry }, function() {
+      if (chrome.runtime.lastError) { /* extension context gone, ignore */ }
+    })
+  } catch(e) { /* extension context invalidated, ignore */ }
 }
