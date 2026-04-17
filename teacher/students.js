@@ -18,8 +18,24 @@ async function addStudent() {
 }
 
 async function deleteStudent(studentId) {
-  if (!confirm("Delete student " + studentId + "?")) return
+  if (!confirm("Delete student " + studentId + " and all their logs? This cannot be undone.")) return
   var ok = await fbDelete("students", studentId)
   if (ok) { if (currentStudentId === studentId) currentStudentId = null; loadOverview() }
-  else alert("Failed to delete.")
+  else console.warn("[ACE] Failed to delete student:", studentId)
+}
+
+async function deleteExam(examCode) {
+  if (!confirm("Delete exam \"" + examCode + "\" and all its violation logs? This cannot be undone.")) return
+  try {
+
+    var logs = await fbQuery("logs", "exam_title", examCode)
+    if (logs.length) {
+      var results = await Promise.all(logs.map(function(l) { return fbDelete("logs", l._id) }))
+      var failed  = results.filter(function(r) { return !r }).length
+      if (failed) console.warn("[ACE] deleteExam: " + failed + " log(s) failed to delete")
+    }
+
+    await fbDelete("exams", examCode)
+    loadOverview()
+  } catch(e) { console.warn("[ACE] deleteExam:", e.message); loadOverview() }
 }
