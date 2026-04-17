@@ -5,6 +5,31 @@ function setDot(on) {
   lbl.style.color = on ? "#00e676"    : "#3d444d"
 }
 
+// --- Fullscreen monitoring (runs directly in student.html page context) ---
+var fsActive = false
+var wasFS    = false
+
+function onFSChange() {
+  if (!fsActive) return
+  var now = !!(document.fullscreenElement || document.webkitFullscreenElement)
+  if (wasFS && !now) log("FULLSCREEN_EXIT", "Exited fullscreen mode")
+  wasFS = now
+}
+
+function mountFullscreenMonitor() {
+  fsActive = true
+  wasFS    = !!(document.fullscreenElement || document.webkitFullscreenElement)
+  document.addEventListener("fullscreenchange",       onFSChange)
+  document.addEventListener("webkitfullscreenchange", onFSChange)
+}
+
+function unmountFullscreenMonitor() {
+  fsActive = false
+  document.removeEventListener("fullscreenchange",       onFSChange)
+  document.removeEventListener("webkitfullscreenchange", onFSChange)
+}
+// -------------------------------------------------------------------------
+
 function initExam() {
   $("btn-start").addEventListener("click", onExamStart)
   $("btn-end").addEventListener("click",   onExamEnd)
@@ -12,14 +37,26 @@ function initExam() {
 
 function onExamStart() {
   var examTitle = $("exam-title").value.trim()
-  if (!examTitle) { showMsg("setup-msg", "✗ Enter exam code", "red"); return }
+  if (!examTitle) { showMsg("setup-msg", "\u2717 Enter exam code", "red"); return }
   chrome.storage.local.get(["student_login"], function(d) {
     var sl      = d.student_login || {}
     var session = { student_id: sl.id, student_name: sl.name, exam_title: examTitle, started_at: new Date().toISOString(), exam_active: true }
     chrome.storage.local.set({ student_session: session, all_logs: [] }, function() {
+      loggerActivate(session)
+      mountFullscreenMonitor()
+
       chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-        tabs[0] && chrome.tabs.sendMessage(tabs[0].id, { action: "EXAM_START", session })
+        if (tabs[0]) {
+          chrome.tabs.sendMessage(tabs[0].id, { action: "EXAM_START", session }, function() {
+            if (chrome.runtime.lastError) { /* content script not on this tab */ return }
+            // Request fullscreen on the active tab so exits can be detected
+            chrome.tabs.sendMessage(tabs[0].id, { action: "ENTER_FULLSCREEN" }, function() {
+              if (chrome.runtime.lastError) { /* ignore */ }
+            })
+          })
+        }
       })
+
       $("disp-name").textContent = sl.name;    $("disp-id").textContent   = sl.id
       $("disp-exam").textContent = examTitle;  $("disp-time").textContent = new Date().toLocaleTimeString()
       setDot(true); renderLogs(sl.id); showScreen("screen-exam")
@@ -32,9 +69,17 @@ function onExamEnd() {
     var s = d.student_session || {}
     s.exam_active = false; s.ended_at = new Date().toISOString()
     chrome.storage.local.set({ student_session: s, student_login: null }, function() {
+      unmountFullscreenMonitor()
+      loggerDeactivate()
+
       chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-        tabs[0] && chrome.tabs.sendMessage(tabs[0].id, { action: "EXAM_END" })
+        if (tabs[0]) {
+          chrome.tabs.sendMessage(tabs[0].id, { action: "EXAM_END" }, function() {
+            if (chrome.runtime.lastError) { /* ignore */ }
+          })
+        }
       })
+
       setDot(false)
       ;["l-id","l-pass","exam-title"].forEach(f => $(f).value = "")
       showScreen("screen-auth")
